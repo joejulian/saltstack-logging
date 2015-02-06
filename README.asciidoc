@@ -1,0 +1,72 @@
+saltstack-logging
+=================
+:Author:    Joe Julian
+:Email:     <me@joejulian.name>
+
+Logging Module for Salt
+
+Installation
+------------
+* Copy the contents of the +_modules+ and +_states+ directories into those same directories under your +'{file_roots}'+ on your *salt-master*.
+* Install the modules on the minions with +state.highstate+, or +saltutil.sync_all+
+
+Documentation
+-------------
+
+Use this module for outputting the contents of variables to the log file. You can output to each of the log levels:
+
+* debug
+* info
+* warning
+* error
+* critical
+
+Logs will be written to wherever you have salt configured to write logs.
+
+Examples
+--------
+
+Execution Module
+~~~~~~~~~~~~~~~~
+
+[source,jinja2]
+----
+{% set myvar = salt['pillar.get']('foo') %}
+{% do salt['logger.debug'](myvar, "(module) pillar[foo]: ") %}
+----
+
+With debug logging enabled, this might log:
+
+.Output
+----
+[DEBUG   ] (module) pillar[foo]: {'aliases': ['fubar'],
+ 'favorites': [{'foods': ['chocolate', 'strawberries']},
+               {'phrase': ['Oh! F@#%!']}],
+ 'friends': ['bar', 'baz'],
+ 'name': 'foo'}
+----
+
+State Module
+~~~~~~~~~~~~
+
+[source,jinja2]
+----
+test:
+    logging.error:
+        - obj: {{ salt['pillar.get']('foo') }}
+        - string: '(state) pillar[foo]: '
+----
+
+Using the same pillar as the previous example:
+
+.Output
+----
+[ERROR   ] (state) pillar[foo]: {'aliases': ['fubar'],
+ 'favorites': [{'foods': ['chocolate', 'strawberries']},
+               {'phrase': ['Oh! F@#%!']}],
+ 'friends': ['bar', 'baz'],
+ 'name': 'foo'}
+----
+
+[NOTE]
+This example ouputs log level '*error*'.
