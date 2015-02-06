@@ -29,7 +29,7 @@ Examples
 Execution Module
 ~~~~~~~~~~~~~~~~
 
-[source,jinja2]
+[source,jinja]
 ----
 {% set myvar = salt['pillar.get']('foo') %}
 {% do salt['logger.debug'](myvar, "(module) pillar[foo]: ") %}
@@ -49,7 +49,7 @@ With debug logging enabled, this might log:
 State Module
 ~~~~~~~~~~~~
 
-[source,jinja2]
+[source,jinja]
 ----
 test:
     logging.error:
